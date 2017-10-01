@@ -1,12 +1,15 @@
 package ar.edu.unq.iu.modelo;
 
 import ar.edu.unq.iu.modelo.Agregado;
+import ar.edu.unq.iu.modelo.Ingrediente;
 import ar.edu.unq.iu.modelo.Pizza;
 import ar.edu.unq.iu.modelo.Tamanio;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import org.eclipse.xtend.lib.annotations.Accessors;
 import org.eclipse.xtext.xbase.lib.Pure;
+import org.uqbar.commons.model.annotations.Dependencies;
 import org.uqbar.commons.model.annotations.TransactionalAndObservable;
 
 @TransactionalAndObservable
@@ -17,20 +20,22 @@ public class Plato {
   
   private Tamanio tamanio;
   
-  private List<Agregado> agregados = new ArrayList<Agregado>();
+  private Map<Ingrediente, Agregado> agregados = new HashMap<Ingrediente, Agregado>();
   
   public Plato(final Pizza p, final Tamanio tamanio) {
     this.pizza = p;
     this.tamanio = tamanio;
   }
   
+  @Dependencies({ "agregados", "pizza", "tamanio" })
   public double getPrecio() {
     double _xblockexpression = (double) 0;
     {
       double _precio = this.pizza.getPrecio();
       double _precio_1 = this.tamanio.getPrecio();
       double p = (_precio * _precio_1);
-      for (final Agregado a : this.agregados) {
+      Collection<Agregado> _values = this.agregados.values();
+      for (final Agregado a : _values) {
         double _p = p;
         Double _precio_2 = a.getPrecio();
         p = (_p + (_precio_2).doubleValue());
@@ -38,6 +43,22 @@ public class Plato {
       _xblockexpression = p;
     }
     return _xblockexpression;
+  }
+  
+  public Agregado agregarAgregado(final Agregado a) {
+    return this.agregados.put(a.getIngrediente(), a);
+  }
+  
+  public Agregado quitarAgregado(final Agregado a) {
+    return this.agregados.remove(a.getIngrediente());
+  }
+  
+  public boolean contieneAgregadoDe(final Ingrediente i) {
+    return this.agregados.containsKey(i);
+  }
+  
+  public Agregado agregadoDe(final Ingrediente i) {
+    return this.agregados.get(i);
   }
   
   @Pure
@@ -59,11 +80,11 @@ public class Plato {
   }
   
   @Pure
-  public List<Agregado> getAgregados() {
+  public Map<Ingrediente, Agregado> getAgregados() {
     return this.agregados;
   }
   
-  public void setAgregados(final List<Agregado> agregados) {
+  public void setAgregados(final Map<Ingrediente, Agregado> agregados) {
     this.agregados = agregados;
   }
 }

@@ -40,6 +40,16 @@ public class ListadoDePedidos implements Serializable {
     ObservableUtils.firePropertyChanged(this, "pedidosAbiertos");
   }
   
+  public void pasarAEstadoSiguiente() {
+    this.pedidoSeleccionado.pasarAlSiguienteEstado();
+    this.actualizar();
+  }
+  
+  public void pasarAEstadoAnterior() {
+    this.pedidoSeleccionado.pasarAlEstadoAnterior();
+    this.actualizar();
+  }
+  
   @Pure
   public Pedido getPedidoSeleccionado() {
     return this.pedidoSeleccionado;

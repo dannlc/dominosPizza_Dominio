@@ -3,6 +3,7 @@ package ar.edu.unq.iu.appmodel;
 import ar.edu.unq.iu.modelo.Pedido;
 import ar.edu.unq.iu.modelo.Pizza;
 import ar.edu.unq.iu.modelo.Plato;
+import ar.edu.unq.iu.modelo.TamanioGrande;
 import ar.edu.unq.iu.repo.RepoPizza;
 import java.io.Serializable;
 import org.eclipse.xtend.lib.annotations.Accessors;
@@ -24,6 +25,12 @@ public class PedidoAppModel implements Serializable {
   
   public boolean eliminarPlato() {
     return this.pedido.getPlatos().remove(this.platoSeleccionado);
+  }
+  
+  public Plato getNuevoPlato() {
+    Pizza _get = this.getRepoPizza().getObjects().get(0);
+    TamanioGrande _tamanioGrande = new TamanioGrande();
+    return new Plato(_get, _tamanioGrande);
   }
   
   public RepoPizza getRepoPizza() {

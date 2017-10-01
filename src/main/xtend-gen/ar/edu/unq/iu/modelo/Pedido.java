@@ -20,6 +20,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.simplejavamail.email.Email;
 import org.simplejavamail.mailer.Mailer;
 import org.uqbar.commons.model.Entity;
+import org.uqbar.commons.model.annotations.Dependencies;
 import org.uqbar.commons.model.annotations.TransactionalAndObservable;
 
 @TransactionalAndObservable
@@ -40,7 +41,7 @@ public class Pedido extends Entity {
   
   private EstadoPedido estado;
   
-  private LocalDateTime tiempoEspera;
+  private int tiempoEspera;
   
   private Email mail;
   
@@ -51,9 +52,10 @@ public class Pedido extends Entity {
     Preparando _preparando = new Preparando();
     this.estado = _preparando;
     cliente.agregarPedido(this);
-    this.tiempoEspera = null;
+    this.tiempoEspera = 0;
   }
   
+  @Dependencies("platos")
   public double getMonto() {
     double _xblockexpression = (double) 0;
     {
@@ -110,7 +112,7 @@ public class Pedido extends Entity {
       EstadoPedido _estadoSiguiente = this.estado.estadoSiguiente(this.envio);
       boolean _equals = Objects.equal(null, _estadoSiguiente);
       if (_equals) {
-        throw new CambioDeEstadoException();
+        throw new CambioDeEstadoException("imposible cambiar el estado del pedido");
       }
       _xblockexpression = this.estado = this.estado.estadoSiguiente(this.envio);
     }
@@ -123,7 +125,7 @@ public class Pedido extends Entity {
       EstadoPedido _estadoAnterior = this.estado.estadoAnterior(this.envio);
       boolean _equals = Objects.equal(null, _estadoAnterior);
       if (_equals) {
-        throw new CambioDeEstadoException();
+        throw new CambioDeEstadoException("imposible cambiar el estado del pedido");
       }
       _xblockexpression = this.estado = this.estado.estadoAnterior(this.envio);
     }
@@ -135,7 +137,7 @@ public class Pedido extends Entity {
   }
   
   public int calcularTiempoEspera() {
-    return Long.valueOf(ChronoUnit.MINUTES.between(LocalDateTime.now(), this.fechaHora)).intValue();
+    return this.tiempoEspera = Long.valueOf(ChronoUnit.MINUTES.between(LocalDateTime.now(), this.fechaHora)).intValue();
   }
   
   public boolean agregarPlato(final Plato plato) {
@@ -212,11 +214,11 @@ public class Pedido extends Entity {
   }
   
   @Pure
-  public LocalDateTime getTiempoEspera() {
+  public int getTiempoEspera() {
     return this.tiempoEspera;
   }
   
-  public void setTiempoEspera(final LocalDateTime tiempoEspera) {
+  public void setTiempoEspera(final int tiempoEspera) {
     this.tiempoEspera = tiempoEspera;
   }
   

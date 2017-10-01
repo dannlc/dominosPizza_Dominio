@@ -60,7 +60,7 @@ public class PlatoTest {
     final Procedure1<Plato> _function = (Plato it) -> {
       LadoAmbos _ladoAmbos = new LadoAmbos();
       Agregado _agregado = new Agregado(this.morron, _ladoAmbos);
-      it.getAgregados().add(_agregado);
+      it.agregarAgregado(_agregado);
     };
     final Plato plato = ObjectExtensions.<Plato>operator_doubleArrow(_plato, _function);
     Assert.assertEquals(plato.getPrecio(), ((70.0 * 1.25) + 20.0), 0.0);
@@ -73,7 +73,7 @@ public class PlatoTest {
     final Procedure1<Plato> _function = (Plato it) -> {
       LadoIzquierdo _ladoIzquierdo = new LadoIzquierdo();
       Agregado _agregado = new Agregado(this.aceitunas, _ladoIzquierdo);
-      it.getAgregados().add(_agregado);
+      it.agregarAgregado(_agregado);
     };
     final Plato plato = ObjectExtensions.<Plato>operator_doubleArrow(_plato, _function);
     Assert.assertEquals(plato.getPrecio(), ((80.0 * 0.25) + 8.0), 0.0);

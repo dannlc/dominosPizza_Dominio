@@ -4,8 +4,10 @@ import ar.edu.unq.iu.modelo.Ingrediente;
 import ar.edu.unq.iu.modelo.Lado;
 import org.eclipse.xtend.lib.annotations.Accessors;
 import org.eclipse.xtext.xbase.lib.Pure;
+import org.uqbar.commons.model.annotations.TransactionalAndObservable;
 
 @Accessors
+@TransactionalAndObservable
 @SuppressWarnings("all")
 public class Agregado {
   private Ingrediente ingrediente;

@@ -4,4 +4,8 @@ import ar.edu.unq.iu.modelo.Lado;
 
 @SuppressWarnings("all")
 public class LadoIzquierdo extends Lado {
+  @Override
+  public String toString() {
+    return "Lado Izquierdo";
+  }
 }
